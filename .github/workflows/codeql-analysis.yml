@@ -1,0 +1,31 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main, v3.0.0, v2.0.0]
+
+jobs:
+  analyze:
+    if: github.repository_owner	 == 'PaloAltoNetworks'
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: ["javascript"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
